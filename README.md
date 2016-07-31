@@ -6,7 +6,9 @@ chan-fp uses [core.async](https://github.com/clojure/core.async) channels to pro
 
 ### Futures
 
-Futures are read-only, asynchronous computations that can be read many times. In order to use the provided combinators, a future must always enclose a `Comp` which is a record containing the value of the computation (`:value`) as well as a boolean flag (`:ok`) that is `false` if something went wrong. Futures can be created in the following manner:
+Futures are read-only, asynchronous computations that can be read many times. In order to use the provided combinators, a future must always enclose a `Comp` which is a record containing the value of the computation (`:value`) as well as a boolean flag (`:ok`) that indicates whether something went wrong.
+
+Futures can be used in the following manner:
 
 ```clojure
 (require '[chan-fp.core :as cfp])
