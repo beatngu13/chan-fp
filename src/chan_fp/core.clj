@@ -1,6 +1,5 @@
 (ns chan-fp.core
-  (:require [clojure.core.async
-             :refer [>! <!! alt!! chan go go-loop]]))
+  (:require [clojure.core.async :refer [>! <!! alt!! chan go go-loop]]))
 
 ;;; Future
 
@@ -47,6 +46,7 @@
               (f (:value comp))
               comp))))
 
+;; FIXME Use alt!
 (defn any [fut-a fut-b]
   (future #(letfn [(on-select [comp fut]
                      (if (:ok comp)
