@@ -18,10 +18,10 @@ Futures can be used in the following manner:
   (cfp/->Comp 42 true))
 ;;=> #'user/my-comp
 
-(def my-fut (cfp/future my-comp)) ; Not blocking.
+(def my-fut (cfp/future my-comp))                           ; Not blocking.
 ;;=> #'user/my-fut
 
-(cfp/get my-fut) ; Might blocking.
+(cfp/get my-fut)                                            ; Might blocking.
 ;;=> #chan_fp.core.Comp{:value 42, :ok true}
 ```
 
