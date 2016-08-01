@@ -6,7 +6,7 @@ chan-fp uses [core.async](https://github.com/clojure/core.async) channels to pro
 
 ### Futures
 
-Futures are read-only, asynchronous computations that can be read many times. In order to use the provided combinators, a future must always enclose a `Comp` which is a record containing the value of the computation (`:value`) as well as a boolean flag (`:ok`) that indicates whether something went wrong.
+Futures are read-only, asynchronous computations that can be read many times. In order to use the provided combinators, a future must enclose a `Comp` which is a record containing the value of the computation (`:value`) and a boolean flag (`:ok`) that indicates whether something went wrong. `Comp` implements `IDeref`, hence, the value can be obtained via `deref` (or `@`) as well.
 
 Futures can be used in the following manner:
 
@@ -14,7 +14,6 @@ Futures can be used in the following manner:
 (require '[chan-fp.core :as cfp])
 
 (defn my-comp []
-  (Thread/sleep 1000)
   (cfp/->Comp 42 true))
 ;;=> #'user/my-comp
 
@@ -40,36 +39,13 @@ Additionally, since futures are channels, one can basically use every function t
 (require '[chan-fp.core :as cfp]
          '[clojure.core.async :as async])
 
-(def fut-a (cfp/future #(cfp/->Comp 1 true)))
-;;=> #'user/fut-a
-
-(def fut-b (cfp/future #(cfp/->Comp 2 true)))
-;;=> #'user/fut-b
-
-(def mapped-futures
-  (async/map #(+ (:value %1) (:value %2)) [fut-a fut-b]))
-;;=> #'user/mapped-futures
-
-(cfp/get mapped-futures)
-;;=> 3
-
-(async/<!! mapped-futures)
-;;=> 3
-```
-
-Or:
-
-```clojure
-(require '[chan-fp.core :as cfp]
-         '[clojure.core.async :as async])
-
 (let [fut (cfp/future (fn []
-                        (Thread/sleep 2000)
-                        (cfp/->Comp 3 true)))]
+                        (Thread/sleep 1000)
+                        (cfp/->Comp 1 true)))]
   (async/alt!!
-    fut ([comp] (:value comp))
-    (async/timeout 1000) :timeout))
-;;=> :timeout
+    fut ([comp] @comp)
+    (async/timeout 2000) :timeout))
+;;=> 1
 ```
 
 This is my first Clojure project, therefore, I'd be grateful for any help or advice.

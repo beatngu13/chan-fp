@@ -1,9 +1,13 @@
 (ns chan-fp.core
-  (:require [clojure.core.async :refer [>! <!! alt!! chan go go-loop]]))
+  (:require [clojure.core.async :refer [>! <!! alt!! chan go go-loop]])
+  (:import clojure.lang.IDeref))
 
 ;;; Future
 
-(defrecord Comp [value ok])
+(defrecord Comp [value ok]
+  IDeref
+  (deref [_]
+    value))
 
 (defn future [f]
   (let [fut (chan)]
