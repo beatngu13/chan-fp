@@ -2,6 +2,8 @@
 
 chan-fp uses [core.async](https://github.com/clojure/core.async) channels to provide an alternate implementation of futures and promises, based on ["From Events to Futures and Promises and back"](http://www.home.hs-karlsruhe.de/~suma0002/publications/events-to-futures.pdf), for Clojure.
 
+This is my first Clojure project, therefore, I'd be grateful for any help or advice.
+
 ## Usage
 
 ### Futures
@@ -34,30 +36,7 @@ The following set of combinators is currently implemented (`doc` will be availab
 * `then`
 * `any`
 
-Additionally, since futures are channels, one can basically use every function that operations on channels (checkout the [official API](http://clojure.github.io/core.async/)). For instance:
-
-```clojure
-(require '[chan-fp.core :as cfp]
-         '[clojure.core.async :as async])
-
-(def fut-a (cfp/future #(cfp/->Comp 1 true)))
-;;=> #'user/fut-a
-
-(def fut-b (cfp/future #(cfp/->Comp 2 true)))
-;;=> #'user/fut-b
-
-(def mapped-futures
-  (async/map #(+ (:value %1) (:value %2)) [fut-a fut-b]))
-;;=> #'user/mapped-futures
-
-(cfp/get mapped-futures)
-;;=> 3
-
-(async/<!! mapped-futures)
-;;=> 3
-```
-
-Or:
+Additionally, since futures are channels, one can basically use every function that operations on channels (checkout the [core.async API](http://clojure.github.io/core.async/)). For instance:
 
 ```clojure
 (require '[chan-fp.core :as cfp]
@@ -72,11 +51,9 @@ Or:
 ;;=> :timeout
 ```
 
-This is my first Clojure project, therefore, I'd be grateful for any help or advice.
-
 ### Promises
 
-FIXME
+TODO
 
 ## License
 
